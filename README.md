@@ -6,6 +6,7 @@ The model is trained on the classic **Iris dataset** and deployed using **Stream
 ---
 
 ## 🚀 Features
+
 - Predict Iris flower species in real time
 - Interactive UI with sliders for input features
 - Prediction confidence and probability visualization
@@ -16,8 +17,9 @@ The model is trained on the classic **Iris dataset** and deployed using **Stream
 ---
 
 ## 🧠 Machine Learning Model
-- **Algorithm:** Random Forest Classifier  
-- **Dataset:** Iris Dataset (from scikit-learn)  
+
+- **Algorithm:** Random Forest Classifier
+- **Dataset:** Iris Dataset (from scikit-learn)
 - **Features Used:**
   - Sepal Length
   - Sepal Width
@@ -28,6 +30,7 @@ The model is trained on the classic **Iris dataset** and deployed using **Stream
 ---
 
 ## 🛠️ Tech Stack
+
 - Python
 - Streamlit
 - Scikit-learn
@@ -39,3 +42,11 @@ The model is trained on the classic **Iris dataset** and deployed using **Stream
 ---
 
 ## 📂 Project Structure
+
+iris-random-forest-streamlit-app/
+│
+├── app.py
+├── random_forest_iris_model.pkl
+├── requirements.txt
+├── README.md
+└── .gitignore
