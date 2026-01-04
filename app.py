@@ -1,26 +1,41 @@
-import streamlit as st
-import pickle
+from flask import Flask, request, jsonify
+import joblib
 import numpy as np
 
-# Load model
-with open("iris_model.pkl", "rb") as f:
-    model = pickle.load(f)
+# Initialize Flask app
+app = Flask(__name__)
 
-st.set_page_config(page_title="Iris Flower Classifier", page_icon="🌸")
+# Load trained model
+model = joblib.load("random_forest_iris_model.pkl")
 
-st.title("🌸 Iris Flower Prediction App")
-st.write("Enter flower measurements to predict the species.")
+# Iris target names
+target_names = ["setosa", "versicolor", "virginica"]
 
-# User inputs
-sepal_length = st.slider("Sepal Length (cm)", 4.0, 8.0, 5.4)
-sepal_width = st.slider("Sepal Width (cm)", 2.0, 4.5, 3.4)
-petal_length = st.slider("Petal Length (cm)", 1.0, 7.0, 1.3)
-petal_width = st.slider("Petal Width (cm)", 0.1, 2.5, 0.2)
+@app.route("/")
+def home():
+    return "Iris Prediction API is running 🚀"
 
-# Predict
-if st.button("Predict"):
-    input_data = np.array([[sepal_length, sepal_width, petal_length, petal_width]])
-    prediction = model.predict(input_data)[0]
+@app.route("/predict", methods=["POST"])
+def predict():
+    data = request.get_json()
 
-    species = ["Setosa", "Versicolor", "Virginica"]
-    st.success(f"🌼 Predicted Species: **{species[prediction]}**")
+    # Expecting 4 features
+    features = [
+        data["sepal_length"],
+        data["sepal_width"],
+        data["petal_length"],
+        data["petal_width"]
+    ]
+
+    features = np.array(features).reshape(1, -1)
+
+    prediction = model.predict(features)[0]
+    confidence = max(model.predict_proba(features)[0])
+
+    return jsonify({
+        "prediction": target_names[prediction],
+        "confidence": round(confidence, 2)
+    })
+
+if __name__ == "__main__":
+    app.run(debug=True)
